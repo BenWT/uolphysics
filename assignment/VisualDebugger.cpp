@@ -136,6 +136,19 @@ namespace VisualDebugger
 		if (toupper(key) == 'R') {
 			scene->ExampleKeyReleaseHandler();
 		}
+
+		if (toupper(key) == 'I') {
+			scene->GetSelectedActor()->addForce(PxVec3(0, 0, -1) * 150.f);
+		}
+		if (toupper(key) == 'K') {
+			scene->GetSelectedActor()->addForce(PxVec3(0, 0, 1)*150.f);
+		}
+		if (toupper(key) == 'J') {
+			scene->GetSelectedActor()->addForce(PxVec3(-1, 0, 0)*150.f);
+		}
+		if (toupper(key) == 'L') {
+			scene->GetSelectedActor()->addForce(PxVec3(1, 0, 0)*150.f);
+		}
 	}
 	void HandleKeyHold(int key) {
 		// TODO: remove for release
