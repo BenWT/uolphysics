@@ -179,6 +179,10 @@ namespace PhysicsEngine
 		Sphere* ball;
 		Box* box1, box2;
 		TriangleMesh* courseMesh;
+
+		Box* seesawTop;
+		RevoluteJoint* seeSawJoint;
+
 		MySimulationEventCallback* my_callback;
 		
 	public:
@@ -201,22 +205,29 @@ namespace PhysicsEngine
 			my_callback = new MySimulationEventCallback();
 			px_scene->setSimulationEventCallback(my_callback);
 
-			courseMesh = new TriangleMesh(courseVerts, courseTrigs);
-			Add(courseMesh);
+			/*courseMesh = new TriangleMesh(courseVerts, courseTrigs);
+			Add(courseMesh);*/
 
 			plane = new Plane();
 			plane->Color(PxVec3(210.f/255.f,210.f/255.f,210.f/255.f));
 			Add(plane);
 
-			ball = new Sphere();
+			/*ball = new Sphere();
 			ball->Color(PxVec3(1.f, 1.f, 1.f));
 			ball->Name("Ball");
-			Add(ball);
+			Add(ball);*/
 
-			box1 = new Box(PxTransform(PxVec3(5.0f, .5f, .0f)));
+			/*box1 = new Box(PxTransform(PxVec3(0.0f, 15.5f, 5.0f)));
 			box1->Color(PxVec3(1.f, 1.f, 1.f));
 			box1->Name("Box1");
-			Add(box1);
+			Add(box1);*/
+
+			seesawTop = new Box(PxTransform(PxVec3(0.f, 5.5f, .0f)), PxVec3(1.f, 0.1f, 10.f));
+			seesawTop->Color(PxVec3(0.f, 0.f, 0.f));
+			Add(seesawTop);
+
+			seeSawJoint = new RevoluteJoint(NULL, PxTransform(PxVec3(0.f, 3.f, 0.f)), seesawTop, PxTransform(PxVec3(0.f, 0.f, 0.f)));
+			
 		}
 
 		//Custom udpate function

@@ -137,7 +137,21 @@ namespace VisualDebugger
 			scene->ExampleKeyReleaseHandler();
 		}
 	}
-	void HandleKeyHold(int key) {}
+	void HandleKeyHold(int key) {
+		// TODO: remove for release
+		if (toupper(key) == 'W') {
+			camera->MoveForward(delta_time);
+		}
+		if (toupper(key) == 'A') {
+			camera->MoveLeft(delta_time);
+		}
+		if (toupper(key) == 'S') {
+			camera->MoveBackward(delta_time);
+		}
+		if (toupper(key) == 'D') {
+			camera->MoveRight(delta_time);
+		}
+	}
 
 	void KeyPress(unsigned char key, int x, int y)
 	{
