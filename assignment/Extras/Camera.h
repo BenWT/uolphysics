@@ -31,6 +31,8 @@ namespace VisualDebugger
 		///get camera position
 		PxVec3 getEye() const;
 
+		void setDir(PxVec3);
+
 		///get camera direction
 		PxVec3 getDir() const;
 
@@ -54,5 +56,8 @@ namespace VisualDebugger
 
 		///move camera down
 		void MoveDown(PxReal delta_time);
+		
+		// Custom function for camera follow
+		void SetPosition(PxReal x, PxReal y, PxReal z);
 	};
 }

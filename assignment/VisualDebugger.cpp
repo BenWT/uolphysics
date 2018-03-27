@@ -18,8 +18,9 @@ namespace VisualDebugger
 	enum HUDState
 	{
 		EMPTY = 0,
-		HELP = 1,
-		PAUSE = 2
+		GAME = 1,
+		VICTORY = 2,
+		PAUSE = 3
 	};
 
 	//function declarations
@@ -29,11 +30,16 @@ namespace VisualDebugger
 
 	void exitCallback(void);
 
+	void CameraUpdate();
 	void RenderScene();
 	void HUDInit();
 
+	/// Gameplay Variables
+	PxI32 hitCounter = 0;
+
 	///simulation objects
 	Camera* camera;
+	PxReal ballAngle = .0f, mouseSensitivity = 25.0f;
 	PhysicsEngine::MyScene* scene;
 	PxReal delta_time = 1.f / 60.f;
 	PxReal gForceStrength = 20;
@@ -42,6 +48,7 @@ namespace VisualDebugger
 	bool key_state[MAX_KEYS];
 	bool hud_show = true;
 	HUD hud;
+
 
 	//Init the debugger
 	void Init(const char *window_name, int width, int height) {
@@ -74,18 +81,24 @@ namespace VisualDebugger
 	}
 
 	void HUDInit() {
-		//initialise HUD
-		//add an empty screen
+		hud.Clear();
+
 		hud.AddLine(EMPTY, "");
+
 		//add a help screen
-		hud.AddLine(HELP, " Simulation");
-		hud.AddLine(HELP, "    F10 - pause");
-		hud.AddLine(HELP, "    F12 - reset");
+		hud.AddLine(GAME, " Simulation");
+		hud.AddLine(GAME, "    F10 - pause");
+		hud.AddLine(GAME, "    F12 - reset");
+		hud.AddLine(GAME, "");
+		hud.AddLine(GAME, " Score");
+		hud.AddLine(GAME, "    " + to_string(hitCounter));
+
 		//add a pause screen
 		hud.AddLine(PAUSE, "");
 		hud.AddLine(PAUSE, "");
 		hud.AddLine(PAUSE, "");
 		hud.AddLine(PAUSE, "   Simulation paused. Press F10 to continue.");
+
 		//set font size for all screens
 		hud.FontSize(0.018f);
 		//set font color for all screens
@@ -97,6 +110,7 @@ namespace VisualDebugger
 	}
 
 	void RenderScene() {
+		CameraUpdate();
 		KeyHold();
 
 		Renderer::Start(camera->getEye(), camera->getDir());
@@ -107,7 +121,7 @@ namespace VisualDebugger
 
 		if (hud_show) {
 			if (scene->Pause()) hud.ActiveScreen(PAUSE);
-			else hud.ActiveScreen(HELP);
+			else hud.ActiveScreen(GAME);
 			// TODO add victory hud
 		} 
 			
@@ -116,9 +130,30 @@ namespace VisualDebugger
 		scene->Update(delta_time);
 	}
 
+	void CameraUpdate() {
+		PxReal x = 15.0f * sin(ballAngle * (PxPi / 180));
+		PxReal z = 15.0f * cos(ballAngle * (PxPi / 180));
+
+		PxVec3 target = scene->GetSelectedActor()->getGlobalPose().p + PxVec3(x, 5.0f, z);
+		PxVec3 diff = target - camera->getTransform().p;
+
+		camera->SetPosition(diff.x, diff.y, diff.z);
+		camera->setDir(PxVec3(-x, .0f, -z)); // TODO Change to look at
+
+		cout << scene->GetSelectedActor()->getLinearVelocity().magnitude() << endl;
+	}
+
 	void HandleKeyPress(int key) {
 		if (toupper(key) == 'R') {
 			scene->ExampleKeyPressHandler();
+		}
+
+		if (key == 32) { // Space
+			if (abs(scene->GetSelectedActor()->getLinearVelocity().magnitude()) < .1f) {
+				scene->GetSelectedActor()->addForce(PxVec3(camera->getDir().x, 0, camera->getDir().z) * 20.f);
+				hitCounter += 1;
+				HUDInit();
+			}
 		}
 
 		// Handle Application Events
@@ -136,33 +171,13 @@ namespace VisualDebugger
 		if (toupper(key) == 'R') {
 			scene->ExampleKeyReleaseHandler();
 		}
-
-		if (toupper(key) == 'I') {
-			scene->GetSelectedActor()->addForce(PxVec3(0, 0, -1) * 150.f);
-		}
-		if (toupper(key) == 'K') {
-			scene->GetSelectedActor()->addForce(PxVec3(0, 0, 1)*150.f);
-		}
-		if (toupper(key) == 'J') {
-			scene->GetSelectedActor()->addForce(PxVec3(-1, 0, 0)*150.f);
-		}
-		if (toupper(key) == 'L') {
-			scene->GetSelectedActor()->addForce(PxVec3(1, 0, 0)*150.f);
-		}
 	}
 	void HandleKeyHold(int key) {
-		// TODO: remove for release
-		if (toupper(key) == 'W') {
-			camera->MoveForward(delta_time);
-		}
 		if (toupper(key) == 'A') {
-			camera->MoveLeft(delta_time);
-		}
-		if (toupper(key) == 'S') {
-			camera->MoveBackward(delta_time);
+			ballAngle += delta_time * mouseSensitivity;
 		}
 		if (toupper(key) == 'D') {
-			camera->MoveRight(delta_time);
+			ballAngle -= delta_time * mouseSensitivity;
 		}
 	}
 
