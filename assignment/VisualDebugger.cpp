@@ -150,7 +150,7 @@ namespace VisualDebugger
 
 		if (key == 32) { // Space
 			if (abs(scene->GetSelectedActor()->getLinearVelocity().magnitude()) < .1f) {
-				scene->GetSelectedActor()->addForce(PxVec3(camera->getDir().x, 0, camera->getDir().z) * 20.f);
+				scene->GetSelectedActor()->addForce(PxVec3(camera->getDir().x, 0, camera->getDir().z) * 500.f);
 				hitCounter += 1;
 				HUDInit();
 			}

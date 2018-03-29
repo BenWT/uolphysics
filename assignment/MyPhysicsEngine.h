@@ -366,15 +366,15 @@ namespace PhysicsEngine
 			plane->Color(PxVec3(210.f/255.f,210.f/255.f,210.f/255.f));
 			Add(plane);
 
-			ball = new Sphere(PxTransform(PxVec3(-1.5f, 1.0f, -1.5f)), .5f, 1.0f);
+			ball = new Sphere(PxTransform(PxVec3(-1.5f, 1.0f, -23.5f)), .5f, 15.0f);
 			ball->Color(PxVec3(1.f, 1.f, 1.f));
 			ball->Name("Ball");
 			Add(ball);
 			
-			/*seesawTop = new Box(PxTransform(PxVec3(.0f, .0f, .0f)), PxVec3(1.f, .1f, 10.f), 15.f);
+			seesawTop = new Box(PxTransform(PxVec3(.0f, .0f, .0f)), PxVec3(.75f, .1f, 5.f), 1.f);
 			seesawTop->Color(PxVec3(1.0f, .0f, .0f));
 			Add(seesawTop);
-			seeSawJoint = new RevoluteJoint(NULL, PxTransform(PxVec3(25.0f, 1.5f, .0f)), seesawTop, PxTransform(PxVec3(.0f, .0f, -.2f)));*/
+			seeSawJoint = new RevoluteJoint(NULL, PxTransform(PxVec3(-12.5f, .75f, -23.5f), PxQuat(PxPi / 2, PxVec3(.0f, 1.0f, .0f))), seesawTop, PxTransform(PxVec3(.0f, .0f, -.2f)));
 			
 			spinner1 = new Box(PxTransform(PxVec3(.0f, .0f, .0f)), PxVec3(.75f, 2.5f, .1f), 2.f);
 			spinner1->Color(PxVec3(.0f, 1.0f, .0f));
@@ -386,19 +386,19 @@ namespace PhysicsEngine
 			Add(spinner2);
 			spinner2Joint = new RevoluteJoint(NULL, PxTransform(-23.5f, 1.f, -28.0f, PxQuat(PxPi / 2, PxVec3(.0f, .0f, 1.0f))), spinner2, PxTransform(PxVec3(.0f, .0f, .0f)));
 
-			/*windmill = new Box(PxTransform(PxVec3(.0f, .0f, .0f)), PxVec3(.1f, 5.0f, 1.0f), 1500.0f);
+			windmill = new Box(PxTransform(PxVec3(.0f, .0f, .0f)), PxVec3(.1f, 5.0f, 1.0f), 1500.0f);
 			windmill->Color(PxVec3(.0f, 0.f, 1.0f));
 			Add(windmill);
-			windmillJoint = new RevoluteJoint(NULL, PxTransform(.0f, 6.0f, -5.0f, PxQuat(PxPi / 2, PxVec3(.0f, 1.0f, .0f))), windmill, PxTransform(PxVec3(.0f, .0f, .0f)));*/
+			windmillJoint = new RevoluteJoint(NULL, PxTransform(-23.5f, 5.5f, -34.0f, PxQuat(PxPi / 2, PxVec3(.0f, 1.0f, .0f))), windmill, PxTransform(PxVec3(.0f, .0f, .0f)));
 		}
 
 		//Custom udpate function
 		virtual void CustomUpdate() 
 		{
 			// Rotate the Windmill
-			/*PxVec3 p = windmill->GetShape()->getLocalPose().p;
+			PxVec3 p = windmill->GetShape()->getLocalPose().p;
 			PxQuat q = windmill->GetShape()->getLocalPose().q;
-			windmill->GetShape()->setLocalPose(PxTransform(p, q * PxQuat(-0.01f, PxVec3(1.0f, .0f, .0f))));*/
+			windmill->GetShape()->setLocalPose(PxTransform(p, q * PxQuat(-0.01f, PxVec3(1.0f, .0f, .0f))));
 
 			// camera follows the ball here
 		}
