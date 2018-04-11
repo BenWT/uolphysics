@@ -9,11 +9,6 @@ namespace PhysicsEngine
 {
 	using namespace std;
 
-	//a list of colours: Circus Palette
-	static const PxVec3 color_palette[] = {PxVec3(46.f/255.f,9.f/255.f,39.f/255.f),PxVec3(217.f/255.f,0.f/255.f,0.f/255.f),
-		PxVec3(255.f/255.f,45.f/255.f,0.f/255.f),PxVec3(255.f/255.f,140.f/255.f,54.f/255.f),PxVec3(4.f/255.f,117.f/255.f,111.f/255.f)};
-
-
 	// Positive X is to the right
 	// Positive Z is towards the camera
 	const std::vector<PxVec3> firstSectionVerts = {
@@ -73,7 +68,6 @@ namespace PhysicsEngine
 		20, 17, 18,
 		18, 19, 20
 	};
-
 
 	const std::vector<PxVec3> secondSectionVerts = {
 		// Lower
@@ -211,108 +205,160 @@ namespace PhysicsEngine
 		31, 0, 32
 	};
 
-	struct FilterGroup
-	{
-		enum Enum
-		{
-			ACTOR0		= (1 << 0),
-			ACTOR1		= (1 << 1),
-			ACTOR2		= (1 << 2)
-			//add more if you need
-		};
+	const std::vector<PxVec3> firstGroundVerts = {
+		PxVec3(-3.f, 0.f, 0.f),
+		PxVec3(-3.f, 0.f, -3.f),
+		PxVec3(0.f, 0.f, -3.f),
+		PxVec3(0.f, 0.f, 0.f),
+
+		PxVec3(-5.f, 0.f, -3.f),
+		PxVec3(-5.f, 0.f, -7.f),
+		PxVec3(2.f, 0.f, -7.f),
+		PxVec3(2.f, 0.f, -3.f),
+
+		PxVec3(-5.f, 0.f, -7.f),
+		PxVec3(-5.f, 0.f, -10.f),
+		PxVec3(-2.5f, 0.f, -10.f),
+		PxVec3(-2.5f, 0.f, -7.f),
+
+		PxVec3(-0.5f, 0.f, -7.f),
+		PxVec3(-0.5f, 0.f, -10.f),
+		PxVec3(2.f, 0.f, -10.f),
+		PxVec3(2.f, 0.f, -7.f)
+	};
+	const std::vector<PxU32> firstGroundTrigs = {
+		1, 0, 3,
+		3, 2, 1,
+
+		5, 4, 7,
+		7, 6, 5,
+
+		9, 8, 11,
+		11, 10, 9,
+
+		13, 12, 15,
+		15, 14, 13
 	};
 
-	///A customised collision class, implemneting various callbacks
+	const std::vector<PxVec3> secondGroundVerts = {
+		PxVec3(-11.f, 0.f, 0.f),
+		PxVec3(-11.f, 0.f, -7.f),
+		PxVec3(0.f, 0.f, -7.f),
+		PxVec3(0.f, 0.f, 0.f),
+
+		PxVec3(-9.f, 0.f, -7.f),
+		PxVec3(-9.f, 0.f, -9.f),
+		PxVec3(-2.f, 0.f, -9.f),
+		PxVec3(-2.f, 0.f, -7.f),
+
+		PxVec3(-11.f, 0.f, -9.f),
+		PxVec3(-11.f, 0.f, -14.f),
+		PxVec3(-0.f, 0.f, -14.f),
+		PxVec3(-0.f, 0.f, -9.f),
+
+		PxVec3(-14.f, 0.f, -10.f),
+		PxVec3(-14.f, 0.f, -13.f),
+		PxVec3(-11.f, 0.f, -13.f),
+		PxVec3(-11.f, 0.f, -10.f),
+
+		PxVec3(-33.f, 0.f, -8.f),
+		PxVec3(-33.f, 0.f, -15.f),
+		PxVec3(-14.f, 0.f, -15.f),
+		PxVec3(-14.f, 0.f, -8.f),
+
+		PxVec3(-31.f, 0.f, -15.f),
+		PxVec3(-31.f, 0.f, -17.f),
+		PxVec3(-24.f, 0.f, -17.f),
+		PxVec3(-24.f, 0.f, -15.f),
+
+		PxVec3(-33.f, 0.f, -17.f),
+		PxVec3(-33.f, 0.f, -23.f),
+		PxVec3(-22.f, 0.f, -23.f),
+		PxVec3(-22.f, 0.f, -17.f),
+
+		PxVec3(-29.f, 0.f, -23.f),
+		PxVec3(-29.f, 0.f, -27.f),
+		PxVec3(-28.25f, 0.f, -27.f),
+		PxVec3(-28.25f, 0.f, -23.f),
+		
+		PxVec3(-26.75f, 0.f, -23.f),
+		PxVec3(-26.75f, 0.f, -27.f),
+		PxVec3(-26.f, 0.f, -27.f),
+		PxVec3(-26.f, 0.f, -23.f),
+
+		PxVec3(-28.25f, 0.f, -26.25f),
+		PxVec3(-28.25f, 0.f, -27.f),
+		PxVec3(-26.75f, 0.f, -27.f),
+		PxVec3(-26.75f, 0.f, -26.25f),
+
+		PxVec3(-28.25f, 0.f, -23.f),
+		PxVec3(-28.25f, 0.f, -24.75f),
+		PxVec3(-26.75f, 0.f, -24.75f),
+		PxVec3(-26.75f, 0.f, -23.f)
+	};
+	const std::vector<PxU32> secondGroundTrigs = {
+		1, 0, 3,
+		3, 2, 1,
+
+		5, 4, 7,
+		7, 6, 5,
+
+		9, 8, 11,
+		11, 10, 9,
+
+		13, 12, 15,
+		15, 14, 13,
+
+		17, 16, 19,
+		19, 18, 17,
+
+		21, 20, 23,
+		23, 22, 21,
+		
+		25, 24, 27,
+		27, 26, 25,
+
+		29, 28, 31,
+		31, 30, 29,
+
+		33, 32, 35,
+		35, 34, 33,
+
+		37, 36, 39,
+		39, 38, 37,
+
+		41, 40, 43,
+		43, 42, 41
+	};
+
 	class MySimulationEventCallback : public PxSimulationEventCallback
 	{
 	public:
-		//an example variable that will be checked in the main simulation loop
-		bool trigger;
 
-		MySimulationEventCallback() : trigger(false) {}
-
-		///Method called when the contact with the trigger object is detected.
 		virtual void onTrigger(PxTriggerPair* pairs, PxU32 count) 
 		{
 			//you can read the trigger information here
 			for (PxU32 i = 0; i < count; i++)
 			{
-				//filter out contact with the planes
 				if (pairs[i].otherShape->getGeometryType() != PxGeometryType::ePLANE)
 				{
-					//check if eNOTIFY_TOUCH_FOUND trigger
 					if (pairs[i].status & PxPairFlag::eNOTIFY_TOUCH_FOUND)
 					{
-						cerr << "onTrigger::eNOTIFY_TOUCH_FOUND" << endl;
-						trigger = true;
-					}
-					//check if eNOTIFY_TOUCH_LOST trigger
-					if (pairs[i].status & PxPairFlag::eNOTIFY_TOUCH_LOST)
-					{
-						cerr << "onTrigger::eNOTIFY_TOUCH_LOST" << endl;
-						trigger = false;
+						pairs[i].otherActor->isRigidDynamic()->setGlobalPose(PxTransform(PxVec3(-1.5f, 1.5f, -1.5f)));
+						pairs[i].otherActor->isRigidDynamic()->putToSleep();
+						pairs[i].otherActor->isRigidDynamic()->setGlobalPose(PxTransform(PxVec3(-1.5f, 1.5f, -1.5f)));
+						pairs[i].otherActor->isRigidDynamic()->clearForce();
+						pairs[i].otherActor->isRigidDynamic()->clearTorque();
+						pairs[i].otherActor->isRigidDynamic()->wakeUp();
 					}
 				}
 			}
 		}
 
-		///Method called when the contact by the filter shader is detected.
-		virtual void onContact(const PxContactPairHeader &pairHeader, const PxContactPair *pairs, PxU32 nbPairs) 
-		{
-			cerr << "Contact found between " << pairHeader.actors[0]->getName() << " " << pairHeader.actors[1]->getName() << endl;
-
-			//check all pairs
-			for (PxU32 i = 0; i < nbPairs; i++)
-			{
-				//check eNOTIFY_TOUCH_FOUND
-				if (pairs[i].events & PxPairFlag::eNOTIFY_TOUCH_FOUND)
-				{
-					cerr << "onContact::eNOTIFY_TOUCH_FOUND" << endl;
-				}
-				//check eNOTIFY_TOUCH_LOST
-				if (pairs[i].events & PxPairFlag::eNOTIFY_TOUCH_LOST)
-				{
-					cerr << "onContact::eNOTIFY_TOUCH_LOST" << endl;
-				}
-			}
-		}
-
+		virtual void onContact(const PxContactPairHeader &pairHeader, const PxContactPair *pairs, PxU32 nbPairs) {}
 		virtual void onConstraintBreak(PxConstraintInfo *constraints, PxU32 count) {}
 		virtual void onWake(PxActor **actors, PxU32 count) {}
 		virtual void onSleep(PxActor **actors, PxU32 count) {}
-	};
-
-	//A simple filter shader based on PxDefaultSimulationFilterShader - without group filtering
-	static PxFilterFlags CustomFilterShader( PxFilterObjectAttributes attributes0,	PxFilterData filterData0,
-		PxFilterObjectAttributes attributes1,	PxFilterData filterData1,
-		PxPairFlags& pairFlags,	const void* constantBlock,	PxU32 constantBlockSize)
-	{
-		// let triggers through
-		if(PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
-		{
-			pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
-			return PxFilterFlags();
-		}
-
-		pairFlags = PxPairFlag::eCONTACT_DEFAULT;
-		//enable continous collision detection
-//		pairFlags |= PxPairFlag::eCCD_LINEAR;
-		
-		
-		//customise collision filtering here
-		//e.g.
-
-		// trigger the contact callback for pairs (A,B) where 
-		// the filtermask of A contains the ID of B and vice versa.
-		if((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
-		{
-			//trigger onContact callback for this pair of objects
-			pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;
-			pairFlags |= PxPairFlag::eNOTIFY_TOUCH_LOST;
-//			pairFlags |= PxPairFlag::eNOTIFY_CONTACT_POINTS;
-		}
-
-		return PxFilterFlags();
 	};
 
 	///Custom scene class
@@ -321,6 +367,8 @@ namespace PhysicsEngine
 		Plane* plane;
 		Sphere* ball;
 		Box* box1, box2;
+		TriangleMesh* groundMesh1;
+		TriangleMesh* groundMesh2;
 		TriangleMesh* courseMesh1;
 		TriangleMesh* courseMesh2;
 
@@ -335,38 +383,44 @@ namespace PhysicsEngine
 		Box* windmill;
 		RevoluteJoint* windmillJoint;
 
+		Box* triggerTest;
+
 		MySimulationEventCallback* my_callback;
 		
 	public:
 		MyScene() : Scene() {};
 
-		///A custom scene class
 		void SetVisualisation()
 		{
 			px_scene->setVisualizationParameter(PxVisualizationParameter::eSCALE, 1.0f);
 			px_scene->setVisualizationParameter(PxVisualizationParameter::eCOLLISION_SHAPES, 1.0f);
 		}
 
-		//Custom scene initialisation
 		virtual void CustomInit() 
 		{
-			SetVisualisation();			
+			SetVisualisation();
 
-			GetMaterial()->setDynamicFriction(.2f);
+			GetMaterial()->setDynamicFriction(.3f); 
+			GetMaterial()->setRestitution(.1f);
+			GetMaterial()->setStaticFriction(.3f);
+			px_scene->setFrictionType(PxFrictionType::eTWO_DIRECTIONAL);
 
 			my_callback = new MySimulationEventCallback();
 			px_scene->setSimulationEventCallback(my_callback);
 
-			courseMesh1 = new TriangleMesh(firstSectionVerts, firstSectionTrigs);
+			groundMesh1 = new TriangleMesh(firstGroundVerts, firstGroundTrigs, PxTransform(PxVec3(.0f, .5f, .0f)));
+			Add(groundMesh1);
+			groundMesh2 = new TriangleMesh(secondGroundVerts, secondGroundTrigs, PxTransform(PxVec3(4.0f, .5f, -12.0f)));
+			Add(groundMesh2);
+			courseMesh1 = new TriangleMesh(firstSectionVerts, firstSectionTrigs, PxTransform(PxVec3(.0f, .5f, .0f)));
 			Add(courseMesh1);
-			courseMesh2 = new TriangleMesh(secondSectionVerts, secondSectionTrigs, PxTransform(PxVec3(4.0f, .0f, -12.0f)));
+			courseMesh2 = new TriangleMesh(secondSectionVerts, secondSectionTrigs, PxTransform(PxVec3(4.0f, .5f, -12.0f)));
 			Add(courseMesh2);
 
 			plane = new Plane();
-			plane->Color(PxVec3(210.f/255.f,210.f/255.f,210.f/255.f));
 			Add(plane);
 
-			ball = new Sphere(PxTransform(PxVec3(-1.5f, 1.0f, -23.5f)), .5f, 15.0f);
+			ball = new Sphere(PxTransform(PxVec3(-1.5f, 1.5f, -1.5f)), .5f, 1.0f);
 			ball->Color(PxVec3(1.f, 1.f, 1.f));
 			ball->Name("Ball");
 			Add(ball);
@@ -374,45 +428,54 @@ namespace PhysicsEngine
 			seesawTop = new Box(PxTransform(PxVec3(.0f, .0f, .0f)), PxVec3(.75f, .1f, 5.f), 1.f);
 			seesawTop->Color(PxVec3(1.0f, .0f, .0f));
 			Add(seesawTop);
-			seeSawJoint = new RevoluteJoint(NULL, PxTransform(PxVec3(-12.5f, .75f, -23.5f), PxQuat(PxPi / 2, PxVec3(.0f, 1.0f, .0f))), seesawTop, PxTransform(PxVec3(.0f, .0f, -.2f)));
+			seeSawJoint = new RevoluteJoint(NULL, PxTransform(PxVec3(-12.5f, 1.25f, -23.5f), PxQuat(PxPi / 2, PxVec3(.0f, 1.0f, .0f))), seesawTop, PxTransform(PxVec3(.0f, .0f, -.2f)));
 			
 			spinner1 = new Box(PxTransform(PxVec3(.0f, .0f, .0f)), PxVec3(.75f, 2.5f, .1f), 2.f);
 			spinner1->Color(PxVec3(.0f, 1.0f, .0f));
 			Add(spinner1);
-			spinner1Joint = new RevoluteJoint(NULL, PxTransform(-1.5f, 1.f, -20.0f, PxQuat(PxPi / 2, PxVec3(.0f, .0f, 1.0f))), spinner1, PxTransform(PxVec3(.0f, .0f, .0f)));
+			spinner1Joint = new RevoluteJoint(NULL, PxTransform(-1.5f, 1.5f, -20.0f, PxQuat(PxPi / 2, PxVec3(.0f, .0f, 1.0f))), spinner1, PxTransform(PxVec3(.0f, .0f, .0f)));
 
 			spinner2 = new Box(PxTransform(PxVec3(.0f, .0f, .0f)), PxVec3(.75f, 2.5f, .1f), 2.f);
 			spinner2->Color(PxVec3(.0f, 1.0f, .0f));
 			Add(spinner2);
-			spinner2Joint = new RevoluteJoint(NULL, PxTransform(-23.5f, 1.f, -28.0f, PxQuat(PxPi / 2, PxVec3(.0f, .0f, 1.0f))), spinner2, PxTransform(PxVec3(.0f, .0f, .0f)));
+			spinner2Joint = new RevoluteJoint(NULL, PxTransform(-23.5f, 1.5f, -28.0f, PxQuat(PxPi / 2, PxVec3(.0f, .0f, 1.0f))), spinner2, PxTransform(PxVec3(.0f, .0f, .0f)));
 
 			windmill = new Box(PxTransform(PxVec3(.0f, .0f, .0f)), PxVec3(.1f, 5.0f, 1.0f), 1500.0f);
 			windmill->Color(PxVec3(.0f, 0.f, 1.0f));
 			Add(windmill);
-			windmillJoint = new RevoluteJoint(NULL, PxTransform(-23.5f, 5.5f, -34.0f, PxQuat(PxPi / 2, PxVec3(.0f, 1.0f, .0f))), windmill, PxTransform(PxVec3(.0f, .0f, .0f)));
+			windmillJoint = new RevoluteJoint(NULL, PxTransform(-23.5f, 6.f, -34.0f, PxQuat(PxPi / 2, PxVec3(.0f, 1.0f, .0f))), windmill, PxTransform(PxVec3(.0f, .0f, .0f)));
+
+			triggerTest = new Box(PxTransform(PxVec3(-23.5f, -.5f, -37.5f)), PxVec3(.75f, .75f, .75f), 1.f);
+			triggerTest->Name("trigger");
+			triggerTest->GetShape(0)->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+			triggerTest->GetShape(0)->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+			Add(triggerTest);
+
+			std::vector<PxActor*> actors = GetAllActors();
+			PxActor* ground1 = *(actors.begin());
+			PxActor* ball = *(actors.begin() + 5);
+			ball->isRigidDynamic()->setMass(8.0f);
+			ball->isRigidDynamic()->setLinearDamping(.5f);
+			
+			PxActor* trigger = *(actors.end() - 1);
+			trigger->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, true);
 		}
 
-		//Custom udpate function
 		virtual void CustomUpdate() 
 		{
-			// Rotate the Windmill
 			PxVec3 p = windmill->GetShape()->getLocalPose().p;
 			PxQuat q = windmill->GetShape()->getLocalPose().q;
 			windmill->GetShape()->setLocalPose(PxTransform(p, q * PxQuat(-0.01f, PxVec3(1.0f, .0f, .0f))));
-
-			// camera follows the ball here
 		}
 
-		/// An example use of key release handling
-		void ExampleKeyReleaseHandler()
-		{
-			cerr << "I am realeased!" << endl;
-		}
-
-		/// An example use of key presse handling
-		void ExampleKeyPressHandler()
-		{
-			cerr << "I am pressed!" << endl;
+		void ResetBall() {
+			std::vector<PxActor*> actors = GetAllActors();
+			PxActor* ball = *(actors.begin() + 5);
+			ball->isRigidDynamic()->putToSleep();
+			ball->isRigidDynamic()->setGlobalPose(PxTransform(PxVec3(-1.5f, 1.5f, -1.5f)));
+			ball->isRigidDynamic()->clearForce();
+			ball->isRigidDynamic()->clearTorque();
+			ball->isRigidDynamic()->wakeUp();
 		}
 	};
 }

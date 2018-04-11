@@ -39,7 +39,7 @@ namespace VisualDebugger
 
 	///simulation objects
 	Camera* camera;
-	PxReal ballAngle = .0f, mouseSensitivity = 25.0f;
+	PxReal ballAngle = .0f, mouseSensitivity = 50.0f;
 	PhysicsEngine::MyScene* scene;
 	PxReal delta_time = 1.f / 60.f;
 	PxReal gForceStrength = 20;
@@ -58,7 +58,7 @@ namespace VisualDebugger
 		scene->Init();
 
 		///Init renderer
-		Renderer::BackgroundColor(PxVec3(150.f / 255.f, 150.f / 255.f, 150.f / 255.f));
+		Renderer::BackgroundColor(PxVec3(150.f / 255.f, 150.f / 255.f, 255.f / 255.f));
 		Renderer::SetRenderDetail(40);
 		Renderer::InitWindow(window_name, width, height);
 		Renderer::Init();
@@ -87,17 +87,10 @@ namespace VisualDebugger
 
 		//add a help screen
 		hud.AddLine(GAME, " Simulation");
-		hud.AddLine(GAME, "    F10 - pause");
-		hud.AddLine(GAME, "    F12 - reset");
+		hud.AddLine(GAME, "    M - Reset");
 		hud.AddLine(GAME, "");
 		hud.AddLine(GAME, " Score");
 		hud.AddLine(GAME, "    " + to_string(hitCounter));
-
-		//add a pause screen
-		hud.AddLine(PAUSE, "");
-		hud.AddLine(PAUSE, "");
-		hud.AddLine(PAUSE, "");
-		hud.AddLine(PAUSE, "   Simulation paused. Press F10 to continue.");
 
 		//set font size for all screens
 		hud.FontSize(0.018f);
@@ -119,11 +112,7 @@ namespace VisualDebugger
 		if (actors.size())
 			Renderer::Render(&actors[0], (PxU32)actors.size());
 
-		if (hud_show) {
-			if (scene->Pause()) hud.ActiveScreen(PAUSE);
-			else hud.ActiveScreen(GAME);
-			// TODO add victory hud
-		} 
+		hud.ActiveScreen(GAME);
 			
 		hud.Render();
 		Renderer::Finish();
@@ -138,19 +127,17 @@ namespace VisualDebugger
 		PxVec3 diff = target - camera->getTransform().p;
 
 		camera->SetPosition(diff.x, diff.y, diff.z);
-		camera->setDir(PxVec3(-x, .0f, -z)); // TODO Change to look at
-
-		cout << scene->GetSelectedActor()->getLinearVelocity().magnitude() << endl;
+		camera->setDir(PxVec3(-x, .0f, -z)); 
 	}
 
 	void HandleKeyPress(int key) {
-		if (toupper(key) == 'R') {
-			scene->ExampleKeyPressHandler();
+		if (toupper(key) == 'M') {
+			scene->ResetBall();
 		}
 
 		if (key == 32) { // Space
-			if (abs(scene->GetSelectedActor()->getLinearVelocity().magnitude()) < .1f) {
-				scene->GetSelectedActor()->addForce(PxVec3(camera->getDir().x, 0, camera->getDir().z) * 500.f);
+			if (abs(scene->GetSelectedActor()->getLinearVelocity().magnitude()) < .25f) {
+				scene->GetSelectedActor()->addForce(PxVec3(camera->getDir().x, 0, camera->getDir().z) * 575.f);
 				hitCounter += 1;
 				HUDInit();
 			}
@@ -167,11 +154,7 @@ namespace VisualDebugger
 			exit(0);
 		}
 	}
-	void HandleKeyRelease(int key) {
-		if (toupper(key) == 'R') {
-			scene->ExampleKeyReleaseHandler();
-		}
-	}
+	void HandleKeyRelease(int key) {}
 	void HandleKeyHold(int key) {
 		if (toupper(key) == 'A') {
 			ballAngle += delta_time * mouseSensitivity;

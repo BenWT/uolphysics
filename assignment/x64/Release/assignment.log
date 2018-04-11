@@ -1,8 +1,9 @@
-﻿  VisualDebugger.cpp
+﻿  Assignment.cpp
+  VisualDebugger.cpp
   Generating code
-  73 of 1158 functions ( 6.3%) were compiled, the rest were copied from previous compilation.
+  221 of 1091 functions (20.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    7 functions had inline decision re-evaluated but remain unchanged
+    13 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  assignment.vcxproj -> C:\Users\Ben Townshend\Documents\uolphysics\x64\Release\assignment.exe
-  assignment.vcxproj -> C:\Users\Ben Townshend\Documents\uolphysics\x64\Release\assignment.pdb (Full PDB)
+  assignment.vcxproj -> D:\Ben Townshend\Documents\development\year3\physics\x64\Release\assignment.exe
+  assignment.vcxproj -> D:\Ben Townshend\Documents\development\year3\physics\x64\Release\assignment.pdb (Full PDB)
